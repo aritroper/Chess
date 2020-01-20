@@ -20,7 +20,9 @@ public class King extends Piece {
 		int diffCol = Math.abs(to.getCol() - getCol());
 		int diffRow = Math.abs(to.getRow() - getRow());
 		
-		if(diffCol <= 1 && diffRow <= 1) {
+		if(diffCol <= 1 && diffRow <= 1 
+				|| (to.getRow() == 7 * (getColor()? 1 : 0) && to.getCol() == 6)
+				|| (to.getRow() == 7 * (getColor()? 1 : 0) && to.getCol() == 2)) {
 			if(to.getEmptiness()) {
 				return true;
 			}

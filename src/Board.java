@@ -102,6 +102,7 @@ public class Board {
 	public void makeMove(Square from, Square to) {
 		
 		Piece p = from.getPiece();
+		
 		from.removePiece();
 		
 		if(!to.getEmptiness())
@@ -113,7 +114,47 @@ public class Board {
 			}
 		}
 		
+		
+		//Castling 
+		
+		if (p.getClass() == King.class) {
+			
+			if(to.getRow() == 0 || to.getRow() == 7) {
+				
+				int row = to.getRow();
+				
+				if(to.getCol() == 6) {
+					
+					Square rookSquare = getSquare(row, 7);
+					getSquare(row, 5).setPiece(rookSquare.getPiece());
+					rookSquare.removePiece();
+				}
+				
+				else if(to.getCol() == 2) {
+					
+					Square rookSquare = getSquare(row, 0);
+					getSquare(row, 3).setPiece(rookSquare.getPiece());
+					rookSquare.removePiece();
+				}
+			}
+			
+			getPlayerIn().setCanCastleLeft(false);
+			getPlayerIn().setCanCastleRight(false);
+		}
+		
+		if (p.getClass() == Rook.class) {
+			
+			Rook r = (Rook) p;
+			
+			if(r.getIsLeftRook()) {
+				getPlayerIn().setCanCastleLeft(false);
+			} else {
+				getPlayerIn().setCanCastleRight(false);
+			}
+		}
+		
 		to.setPiece(p);
+		
 
 		getPlayerOut().setInCheck(inCheck(getPlayerOut(), getPlayerIn()));
 		getPlayerIn().setInCheck(inCheck(getPlayerIn(), getPlayerOut()));
@@ -183,9 +224,13 @@ public class Board {
 		for(Piece p : attacker.getPieces()) {
 				
 			Square pieceSquare = getSquare(p.getRow(), p.getCol());
+			
+			if(p.getClass() != King.class) {
 				
-			if (checkValid(pieceSquare, kingSquare)) {
-				return true;
+				if (checkValid(pieceSquare, kingSquare)) {
+					return true;
+				}
+				
 			}
 		}
 		
@@ -196,14 +241,30 @@ public class Board {
 		
 		if (!checkSquareEmpty(from)) {
 			Piece p = from.getPiece();
+			
 			boolean validMove = p.checkMoveValid(to);
+			
+			// check Castling
+			if(p.getClass() == King.class) {
+				
+				if(to.getRow() == 7 && to.getCol() == 6) {
+					
+					return getPlayerIn().getCanCastleRight();
+				}
+				
+				if(to.getRow() == 7 && to.getCol() == 2) {
+					
+					return getPlayerIn().getCanCastleLeft();
+				}
+				
+			}
 			
 			if (validMove) {
 				Stack<Pair> s = p.getMovePath(to);
 				if(checkPath(s))
 				{
-					Board clone = new Board(new Player(true, white.getTurn(), white.getDeepCopyPieces(white.getPieces())), 
-							new Player(false, black.getTurn(), black.getDeepCopyPieces(black.getPieces())));
+					Board clone = new Board(new Player(true, white.getTurn(), white.getCanCastleLeft(), white.getCanCastleRight(), white.getDeepCopyPieces(white.getPieces())), 
+							new Player(false, black.getTurn(), black.getCanCastleLeft(), black.getCanCastleRight(), black.getDeepCopyPieces(black.getPieces())));
 					clone.makeMove(clone.getSquare(from.getRow(), from.getCol()), clone.getSquare(to.getRow(), to.getCol()));
 					return !clone.getPlayerOut().getInCheck();
 				}

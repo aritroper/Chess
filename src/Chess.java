@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Chess {
 
 	public static void main(String[] args) {
-		Board board = new Board(new Player(true, true, getPieces(true)), new Player(false, false, getPieces(false)));
+		Board board = new Board(new Player(true, true, true, true, getPieces(true)), new Player(false, false, true, true, getPieces(false)));
 		System.out.println("\n" + board.printBoard());
 		getMove(board);
 	}
@@ -21,20 +21,26 @@ public class Chess {
 			pieces.add(pawn);
 		}
 		
-		pieces.add(new Rook(color, miscRow, 0));
+		Rook rLeft  = new Rook(color, miscRow, 0);
+		rLeft.setIsLeftRook(color);
+		Rook rRight = new Rook(color, miscRow, 7);
+		rRight.setIsLeftRook(!color);
+		
+		pieces.add(rLeft);
 		pieces.add(new Knight(color, miscRow, 1));
 		pieces.add(new Bishop(color, miscRow, 2));
 		pieces.add(new Queen(color, miscRow, 3));
 		pieces.add(new King(color, miscRow, 4));
 		pieces.add(new Bishop(color, miscRow, 5));
 		pieces.add(new Knight(color, miscRow, 6));
-		pieces.add(new Rook(color, miscRow, 7));
+		pieces.add(rRight);
 		
 		return pieces;
 	}
 	
 	public static void getMove(Board b) {
 		Scanner scanner = new Scanner(System.in);
+		
 		if(b.getPlayerIn().getInCheck()) {
 			System.out.println("\n" + b.getPlayerIn() + " is in CHECK!");
 			

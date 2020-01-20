@@ -4,6 +4,7 @@ public class Rook extends Piece {
 	
 	private char bPrintable = '♖';
 	private char wPrintable = '♜';
+	private boolean isleftRook;
 	
 	public Rook(boolean color, int x, int y) {
 		
@@ -30,6 +31,21 @@ public class Rook extends Piece {
 		else {
 			return false;
 		}
+	}
+	
+	public void setIsLeftRook(boolean isLeft) {
+		
+		this.isleftRook = isLeft;
+	}
+	
+	public boolean getIsLeftRook() {
+		
+		return this.isleftRook;
+	}
+	
+	public boolean getIsRightRook() {
+		
+		return !this.isleftRook;
 	}
 
 	@Override
