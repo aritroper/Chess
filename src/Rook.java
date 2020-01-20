@@ -1,59 +1,57 @@
 import java.util.Stack;
 
 public class Rook extends Piece {
-	
+
 	private char bPrintable = '♖';
 	private char wPrintable = '♜';
 	private boolean isleftRook;
-	
+
 	public Rook(boolean color, int x, int y) {
-		
+
 		super(color, x, y);
-		
+
 		// Choose the display piece
-		if(color) {
+		if (color) {
 			super.setPrintable(wPrintable);
-		}
-		else {
+		} else {
 			super.setPrintable(bPrintable);
 		}
 	}
-	
+
 	public boolean checkMoveValid(Square to) {
-		
-		if ((getRow() == to.getRow() && getCol() != to.getCol()) || (getCol() == to.getCol() && getRow() != to.getRow())) {
+
+		if ((getRow() == to.getRow() && getCol() != to.getCol())
+				|| (getCol() == to.getCol() && getRow() != to.getRow())) {
 			if (to.getEmptiness()) {
 				return true;
-			}
-			else {
+			} else {
 				return (to.getPiece().getColor() != getColor());
 			}
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	public void setIsLeftRook(boolean isLeft) {
-		
+
 		this.isleftRook = isLeft;
 	}
-	
+
 	public boolean getIsLeftRook() {
-		
+
 		return this.isleftRook;
 	}
-	
+
 	public boolean getIsRightRook() {
-		
+
 		return !this.isleftRook;
 	}
 
 	@Override
 	public Stack<Pair> getMovePath(Square to) {
-		
+
 		Stack<Pair> s = new Stack<Pair>();
-		
+
 		if (to.getCol() == getCol()) {
 			int toRow = to.getRow();
 			int fromRow = getRow();
@@ -62,7 +60,7 @@ public class Rook extends Piece {
 				s.push(p);
 			}
 		}
-		
+
 		else {
 			int toCol = to.getCol();
 			int fromCol = getCol();
@@ -71,10 +69,10 @@ public class Rook extends Piece {
 				s.push(p);
 			}
 		}
-		
+
 		return s;
 	}
-	
+
 	public Piece clone() {
 		return new Rook(getColor(), getRow(), getCol());
 	}
