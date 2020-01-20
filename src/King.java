@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class King extends Piece {
 	
 	private char bPrintable = '♔';
@@ -33,6 +35,24 @@ public class King extends Piece {
 		else {
 			return false;
 		}
+	}
+	
+	@Override
+	public Stack<Pair> getMovePath(Square to) {
+		
+		Stack<Pair> s = new Stack<Pair>();
+		
+		if (to.getRow() == getRow()) {
+			
+			int toCol = to.getCol();
+			int fromCol = getCol();
+			for (int i = Math.min(toCol, fromCol) + 1; i < Math.max(toCol, fromCol); i++) {
+				Pair p = new Pair(getRow(), i);
+				s.push(p);
+			}
+		}
+		
+		return s;
 	}
 	
 	public Piece clone() {

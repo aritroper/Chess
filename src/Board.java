@@ -249,12 +249,12 @@ public class Board {
 				
 				if(to.getRow() == 7 && to.getCol() == 6) {
 					
-					return getPlayerIn().getCanCastleRight();
+					validMove = getPlayerIn().getCanCastleRight();
 				}
 				
 				if(to.getRow() == 7 && to.getCol() == 2) {
 					
-					return getPlayerIn().getCanCastleLeft();
+					validMove = getPlayerIn().getCanCastleLeft();
 				}
 				
 			}

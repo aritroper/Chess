@@ -20,6 +20,7 @@ public class Rook extends Piece {
 	}
 	
 	public boolean checkMoveValid(Square to) {
+		
 		if ((getRow() == to.getRow() && getCol() != to.getCol()) || (getCol() == to.getCol() && getRow() != to.getRow())) {
 			if (to.getEmptiness()) {
 				return true;
